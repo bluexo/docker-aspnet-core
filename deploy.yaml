@@ -1,9 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: orleans-demo
+  name: orleans-demo
+spec:
+  ports:
+  - port: 8525
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: orleans-demo
+  type: LoadBalancer
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     run: orleans-api
   name: orleans-api
+  namespace: orleanstest
 spec:
   replicas: 1
   selector:
@@ -26,27 +42,13 @@ spec:
             memory: "256Mi"
             cpu: "250m"
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    run: orleans-api
-  name: orleans-api
-spec:
-  ports:
-  - port: 8888
-    protocol: TCP
-    targetPort: 80
-  selector:
-    run: orleans-api
-  type: LoadBalancer
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     run: orleans-silo
   name: orleans-silo
+  namespace: orleanstest
 spec:
   strategy:
     type: RollingUpdate
