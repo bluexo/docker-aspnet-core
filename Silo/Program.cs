@@ -2,10 +2,13 @@ using System;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using Microsoft.Extensions.Logging;
+using Orleans.Clustering.Kubernetes;
+
 using Grains;
 
 namespace Silo
@@ -24,7 +27,12 @@ namespace Silo
                     options.ClusterId = "orleans-docker";
                     options.ServiceId = "AspNetSampleApp";
                 })
-                .UseLocalhostClustering()
+                .ConfigureEndpoints(new Random(1).Next(10001, 11100), new Random(1).Next(20001, 21100))
+                .UseKubeMembership(options =>
+                {
+                    options.CanCreateResources = true;
+                })
+                .AddMemoryGrainStorageAsDefault()
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(ValueGrain).Assembly).WithReferences())
                 .ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
                 .Build();

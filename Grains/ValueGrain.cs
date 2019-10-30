@@ -9,6 +9,18 @@ namespace Grains
     {
         private string value = "none";
 
+        public override Task OnActivateAsync()
+        {
+            RegisterTimer(OnTimerElapsed, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+            return base.OnActivateAsync();
+        }
+
+        private Task OnTimerElapsed(object arg)
+        {
+            Console.WriteLine($"Current DateTime {DateTime.Now}!");
+            return Task.CompletedTask;
+        }
+
         public Task<string> GetValue()
         {
             return Task.FromResult(this.value);

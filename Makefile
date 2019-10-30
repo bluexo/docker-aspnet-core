@@ -3,11 +3,11 @@
 # do not forget to set Azure Storage connection string on Silo/Program.cs and API/Startup.cs
 
 # your Docker registry (we suppose you have logged in and have push access)
-REGISTRY ?= docker.io/dgkanatsios
+REGISTRY ?= 192.168.124.88:5000
 # the context of your local Kubernetes cluster
-LOCAL_K8S_CLUSTER=docker-for-desktop
+LOCAL_K8S_CLUSTER=minikube
 # the contect of your remote Kubernetes cluster
-REMOTE_K8S_CLUSTER=aksorleans
+REMOTE_K8S_CLUSTER=minikube
 # version/tag of the images that will be pushed to Docker Hub
 VERSION=0.0.14
 
