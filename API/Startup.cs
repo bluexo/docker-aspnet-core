@@ -63,7 +63,11 @@ namespace API
                     options.ClusterId = "orleans-docker";
                     options.ServiceId = "AspNetSampleApp";
                 })
-                .UseKubeGatewayListProvider()
+                .UseMongoDBClustering(options =>
+                {
+                    options.ConnectionString = "mongodb://192.168.124.88:27017";
+                    options.DatabaseName = "k8s-clustering";
+                })
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IValueGrain).Assembly))
                 .ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
                 .Build();

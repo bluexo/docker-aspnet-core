@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Orleans.Client" Version="3.0.0" />
     <PackageReference Include="Orleans.Clustering.Kubernetes" Version="1.1.1" />
+    <PackageReference Include="Orleans.Providers.MongoDB" Version="3.0.0" />
     <PackageReference Include="StackExchange.Exceptional.AspNetCore" Version="2.1.0" />
     <PackageReference Include="StackExchange.Exceptional.Shared" Version="2.1.0" />
   </ItemGroup>

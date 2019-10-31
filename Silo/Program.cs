@@ -27,11 +27,12 @@ namespace Silo
                     options.ClusterId = "orleans-docker";
                     options.ServiceId = "AspNetSampleApp";
                 })
-                .ConfigureEndpoints(new Random(1).Next(10001, 11100), new Random(1).Next(20001, 21100))
-                .UseKubeMembership(options =>
+                .UseMongoDBClustering(options =>
                 {
-                    options.CanCreateResources = true;
+                    options.ConnectionString = "mongodb://192.168.124.88:27017";
+                    options.DatabaseName = "k8s-clustering";
                 })
+                .ConfigureEndpoints(new Random(1).Next(10001, 11100), new Random(1).Next(20001, 21100))
                 .AddMemoryGrainStorageAsDefault()
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(ValueGrain).Assembly).WithReferences())
                 .ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
