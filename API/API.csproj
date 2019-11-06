@@ -1,17 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-    <ServerGarbageCollection>false</ServerGarbageCollection> <!-- https://blog.markvincze.com/troubleshooting-high-memory-usage-with-asp-net-core-on-kubernetes/ -->
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <!-- https://blog.markvincze.com/troubleshooting-high-memory-usage-with-asp-net-core-on-kubernetes/ -->
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="2.4.3" />
     <PackageReference Include="Orleans.Clustering.Kubernetes" Version="1.1.1" />
-    <PackageReference Include="Orleans.Providers.MongoDB" Version="3.0.0" />
+    <PackageReference Include="Orleans.Providers.MongoDB" Version="2.7.0" />
     <PackageReference Include="StackExchange.Exceptional.AspNetCore" Version="2.1.0" />
     <PackageReference Include="StackExchange.Exceptional.Shared" Version="2.1.0" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />
@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Orleans.Server" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="2.4.3" />
     <PackageReference Include="Orleans.Clustering.Kubernetes" Version="1.1.1" />
-    <PackageReference Include="Orleans.Providers.MongoDB" Version="3.0.0" />
+    <PackageReference Include="Orleans.Providers.MongoDB" Version="2.7.0" />
     <PackageReference Include="StackExchange.Exceptional.AspNetCore" Version="2.1.0" />
     <PackageReference Include="StackExchange.Exceptional.Shared" Version="2.1.0" />
   </ItemGroup>
