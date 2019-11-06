@@ -1,71 +1,79 @@
+# WebApi App
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: orleans
   labels:
-    run: orleans-api
-  name: orleans-api
+    run: api
+  name: api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: orleans-api
+      run: api
   strategy: {}
   template:
     metadata:
       labels:
-        run: orleans-api
+        run: api
     spec:
       containers:
       - image: orleans-api-image # image name updated by Makefile
-        name: orleans-api
-        imagePullPolicy: Always
+        name: api
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
         resources:
           limits:
             memory: "256Mi"
             cpu: "250m"
----
+--- 
+
+# WebApi Service
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: orleans
   labels:
-    run: orleans-api
-  name: orleans-api
+    run: api
+  name: api
 spec:
   ports:
   - port: 8888
     protocol: TCP
     targetPort: 80
   selector:
-    run: orleans-api
+    run: api
   type: LoadBalancer
 ---
+
+# Silo App
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: orleans
   labels:
-    run: orleans-silo
-  name: orleans-silo
+    run: silo
+  name: silo
 spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
-  replicas: 2
+  replicas: 8
   selector:
     matchLabels:
-      run: orleans-silo
+      run: silo
   template:
     metadata:
       labels:
-        run: orleans-silo
+        run: silo
     spec:
       containers:
       - image: orleans-silo-image # image name updated by Makefile
-        name: orleans-silo
-        imagePullPolicy: Always
+        name: silo
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 11111
         - containerPort: 30000
@@ -73,3 +81,27 @@ spec:
           limits:
             memory: "256Mi"
             cpu: "250m"
+---
+
+# Silo Service
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: orleans
+  labels:
+    run: silo
+  name: silo
+spec:
+  ports:
+  - port: 8524
+    name: dashboard
+    protocol: TCP
+    targetPort: 8524
+  - port: 8880
+    name: health
+    protocol: TCP
+    targetPort: 8880
+  selector:
+    run: silo
+  type: LoadBalancer
+---

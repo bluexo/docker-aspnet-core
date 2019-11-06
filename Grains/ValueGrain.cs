@@ -7,22 +7,16 @@ namespace Grains
 {
     public class ValueGrain : Grain, IValueGrain
     {
-        private string value = "none";
+        private string value = "-----------NONE-----------";
 
         public override Task OnActivateAsync()
         {
-            RegisterTimer(OnTimerElapsed, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
             return base.OnActivateAsync();
-        }
-
-        private Task OnTimerElapsed(object arg)
-        {
-            Console.WriteLine($"Current DateTime {DateTime.Now}!");
-            return Task.CompletedTask;
         }
 
         public Task<string> GetValue()
         {
+            Console.WriteLine($"GetValue Time = {DateTime.Now}!");
             return Task.FromResult(this.value);
         }
 

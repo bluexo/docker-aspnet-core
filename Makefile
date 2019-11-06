@@ -9,10 +9,12 @@ LOCAL_K8S_CLUSTER=minikube
 # the contect of your remote Kubernetes cluster
 REMOTE_K8S_CLUSTER=minikube
 # version/tag of the images that will be pushed to Docker Hub
-VERSION=0.0.14
+VERSION=0.0.1
 
-API_PROJECT_NAME=orleans-api
-SILO_PROJECT_NAME=orleans-silo
+NAMESPACE=orleans
+
+API_PROJECT_NAME=api
+SILO_PROJECT_NAME=silo
 
 # tag of the images that will be pushed for local development
 TAG?=$(shell git rev-list HEAD --max-count=1 --abbrev-commit)
@@ -43,5 +45,5 @@ useremotecontext:
 		kubectl config use-context $(REMOTE_K8S_CLUSTER)
 
 clean:
-		kubectl delete deployment $(SILO_PROJECT_NAME) $(API_PROJECT_NAME)
-		kubectl delete service $(API_PROJECT_NAME)	
+		kubectl delete deployments --all -n $(NAMESPACE)
+		kubectl delete services --all -n $(NAMESPACE)
