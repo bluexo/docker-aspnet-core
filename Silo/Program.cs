@@ -28,10 +28,15 @@ namespace Silo
                     options.ClusterId = "orleans-docker";
                     options.ServiceId = "AspNetSampleApp";
                 })
+                .Configure<ClusterMembershipOptions>(options =>
+                {
+                    options.DefunctSiloCleanupPeriod = TimeSpan.FromMinutes(10);
+                    options.DefunctSiloExpiration = TimeSpan.FromMinutes(5);
+                })
                 .UseMongoDBClustering(options =>
                 {
                     options.ConnectionString = "mongodb://192.168.124.88:27017";
-                    options.DatabaseName = "k8s-clustering-dev";
+                    options.DatabaseName = "k8s-clustering";
                 })
                 .UseLinuxEnvironmentStatistics()
                 .UseDashboard(options =>

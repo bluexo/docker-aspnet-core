@@ -71,7 +71,7 @@ namespace API
                 .UseMongoDBClustering(options =>
                 {
                     options.ConnectionString = "mongodb://192.168.124.88:27017";
-                    options.DatabaseName = "k8s-clustering-dev";
+                    options.DatabaseName = "k8s-clustering";
                 })
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IValueGrain).Assembly))
                 .ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
