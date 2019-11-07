@@ -12,7 +12,7 @@ namespace API.Controllers
     public class ValuesController : Controller
     {
         private IClusterClient client;
-        
+
         public ValuesController(IClusterClient client)
         {
             this.client = client;
@@ -23,6 +23,21 @@ namespace API.Controllers
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        private async Task LoopAsync()
+        {
+            var random = new Random();
+            while (true)
+            {
+                await Task.Delay(1);
+                Get(random.Next()).Ignore();
+            }
+        }
+
+        public void StartLoop()
+        {
+            Task.Run(LoopAsync);
         }
 
         // GET api/values/5

@@ -13,7 +13,7 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using Orleans.Clustering.Kubernetes;
+using OrleansDashboard;
 
 using GrainInterfaces;
 
@@ -33,6 +33,12 @@ namespace API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSingleton(CreateClusterClient);
+            services.AddSingleton<IGrainFactory>(provider => provider.GetService<IClusterClient>());
+            services.AddServicesForSelfHostedDashboard(configurator: (DashboardOptions options) =>
+            {
+                options.Port = 8524;
+                options.HideTrace = true;
+            });
             services.AddExceptional(settings =>
             {
                 settings.Store.ApplicationName = $"Samples.AspNetCore";
@@ -45,6 +51,8 @@ namespace API
             app.UseExceptional();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseOrleansDashboard();
+            app.Map("/dashboard", builder => builder.UseOrleansDashboard());
             app.UseMvcWithDefaultRoute();
         }
 
@@ -59,10 +67,11 @@ namespace API
                     options.ClusterId = "orleans-docker";
                     options.ServiceId = "AspNetSampleApp";
                 })
+                .UseDashboard()
                 .UseMongoDBClustering(options =>
                 {
                     options.ConnectionString = "mongodb://192.168.124.88:27017";
-                    options.DatabaseName = "k8s-clustering";
+                    options.DatabaseName = "k8s-clustering-dev";
                 })
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IValueGrain).Assembly))
                 .ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())

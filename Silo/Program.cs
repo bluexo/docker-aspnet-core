@@ -6,10 +6,11 @@ using Microsoft.Extensions.Logging;
 
 using Orleans;
 using Orleans.Configuration;
+using Orleans.Statistics;
 using Orleans.Hosting;
-using Orleans.Clustering.Kubernetes;
 
 using Grains;
+using System.Net;
 
 namespace Silo
 {
@@ -30,7 +31,14 @@ namespace Silo
                 .UseMongoDBClustering(options =>
                 {
                     options.ConnectionString = "mongodb://192.168.124.88:27017";
-                    options.DatabaseName = "k8s-clustering";
+                    options.DatabaseName = "k8s-clustering-dev";
+                })
+                .UseLinuxEnvironmentStatistics()
+                .UseDashboard(options =>
+                {
+                    options.HostSelf = false;
+                    options.HideTrace = true;
+                    options.Port = 8524;
                 })
                 .ConfigureEndpoints(new Random(1).Next(10001, 11100), new Random(1).Next(20001, 21100))
                 .AddMemoryGrainStorageAsDefault()
